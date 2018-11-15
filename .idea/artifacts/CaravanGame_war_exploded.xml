@@ -1,0 +1,30 @@
+<component name="ArtifactManager">
+  <artifact type="exploded-war" name="CaravanGame:war exploded">
+    <output-path>$PROJECT_DIR$/out/artifacts/CaravanGame_war_exploded</output-path>
+    <root id="root">
+      <element id="directory" name="WEB-INF">
+        <element id="directory" name="classes">
+          <element id="module-output" name="CaravanGame" />
+        </element>
+        <element id="directory" name="lib">
+          <element id="library" level="project" name="Maven: org.springframework:spring-core:5.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-jcl:5.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-webmvc:5.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-aop:5.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-beans:5.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-context:5.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-expression:5.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: org.springframework:spring-web:5.1.2.RELEASE" />
+          <element id="library" level="project" name="Maven: c3p0:c3p0:0.9.1.2" />
+          <element id="library" level="project" name="Maven: javax.servlet.jsp.jstl:jstl-api:1.2" />
+          <element id="library" level="project" name="Maven: mysql:mysql-connector-java:8.0.13" />
+          <element id="library" level="project" name="Maven: com.google.protobuf:protobuf-java:3.6.1" />
+          <element id="library" level="project" name="Maven: javax.servlet:servlet-api:2.5" />
+          <element id="library" level="project" name="Maven: javax.servlet.jsp:jsp-api:2.1" />
+          <element id="library" level="application" name="Java EE 6-Java EE 6" />
+        </element>
+      </element>
+      <element id="javaee-facet-resources" facet="CaravanGame/web/Web" />
+    </root>
+  </artifact>
+</component>
