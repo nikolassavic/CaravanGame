@@ -14,7 +14,7 @@ public class ConnectionManager {
     private static final String username = "root";
     private static final String password = "bazepodataka";
 
-    static final String MYSQL_DRIVER = "com.mysql.jdbc.Driver";
+    static final String MYSQL_DRIVER = "com.mysql.cj.jdbc.Driver";
     static final String MYSQL_CONNECTION = "jdbc:mysql://localhost/" + dbName +
             "?user=" + username + "&password=" + password + "&useSSL=false";
 

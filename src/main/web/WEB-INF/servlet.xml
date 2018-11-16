@@ -27,6 +27,6 @@
 	</bean>
 
 	<!-- Add support for reading web resources: css, images, js, etc ... -->
-	<mvc:resources location="/resources/" mapping="/resources/**"></mvc:resources>
+	<mvc:resources location="/resources/" mapping="/resources/**"/>
 
 </beans>
