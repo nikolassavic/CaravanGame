@@ -1,0 +1,56 @@
+body{
+    background-color: lightgrey;
+    color: slategrey;
+
+    font-family: Helvetica ,Arial, sans-serif;
+    font-size: 16px;
+    font-weight: normal;
+
+    line-height: 1.5em;
+    margin: 0;
+}
+a{
+    text-decoration: none;
+}
+.container{
+    width: 80%;
+    margin: auto;
+    text-align: center;
+}
+
+#header h1{
+    font-weight: bolder;
+    text-transform: uppercase;
+    word-spacing: 0.2em;
+    padding-top: 40px;
+}
+
+.form-login{
+    margin: 50px auto auto 0;
+    padding: 10px;
+    padding-left: 30px;
+}
+
+.form-login .form-block{
+    margin-bottom: 20px;
+}
+
+.form-login label{
+    display: block;
+}
+
+.form-block input[type="text"], input[type="password"]{
+    width: 30%;
+}
+
+.button{
+    font-size: 1em;
+    background-color: slategrey;
+    color: black;
+    padding: 10px 15px;
+    border: none;
+}
+
+.button:hover{
+    color: whitesmoke;
+}

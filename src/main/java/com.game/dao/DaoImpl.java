@@ -64,9 +64,13 @@ public class DaoImpl implements Dao {
             }
             if (user.isValid()) {
                 result = 1;
-            } else {
+            } else if(!user.isValid()) {
                 result = 2;
             }
+            if (user.getId() == -1){
+                result = 0;
+            }
+
         } catch (SQLException e) {
             result = 0;
             //e.printStackTrace();
