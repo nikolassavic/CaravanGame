@@ -1,7 +1,7 @@
 package com.game.entity;
 
 import javax.persistence.*;
-import java.util.Date;
+import java.sql.Timestamp;
 
 @Entity
 @Table(name = "caravans")
@@ -17,7 +17,7 @@ public class Caravan {
     private int ammo;
     private int ox;
     private int canCarry;
-    private Date lastSaved;
+    private Timestamp lastSaved;
 
     public Caravan() {
     }
@@ -85,10 +85,10 @@ public class Caravan {
         this.canCarry = canCarry;
     }
 
-    public Date getLastSaved() {
+    public Timestamp getLastSaved() {
         return lastSaved;
     }
-    public void setLastSaved(Date lastSaved) {
+    public void setLastSaved(Timestamp lastSaved) {
         this.lastSaved = lastSaved;
     }
 }

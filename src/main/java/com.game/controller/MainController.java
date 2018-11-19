@@ -1,12 +1,17 @@
 package com.game.controller;
 
 import com.game.dao.Dao;
+import com.game.dao.DaoImpl;
+import com.game.entity.Caravan;
+import com.game.entity.Member;
 import com.game.entity.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.jws.soap.SOAPBinding;
+import java.util.List;
 
 @Controller()
 public class MainController {
@@ -20,7 +25,7 @@ public class MainController {
     }
 
     @GetMapping(value = "/login")
-    public String loginPagee(@ModelAttribute("user") User user) {
+    public String loginPage(@ModelAttribute("user") User user) {
         return "login";
     }
 
@@ -36,9 +41,9 @@ public class MainController {
         } else if (result == 1) {
             redirect = "game";
         } else if (result == 2) {
-            redirect = "game";
+            redirect = "validate";
         } else {
-            redirect = "404";
+            redirect = "redirect:/404";
         }
         return redirect;
     }
@@ -48,15 +53,18 @@ public class MainController {
         return "registration";
     }
 
-    @PostMapping(value = "/regregistration")
+    @PostMapping(value = "/registration")
     String registation(User newUser) {
         String redirect;
         newUser.setPassword(DigestUtils.sha256Hex(newUser.getPassword()));
-        int resulet = dao.newUser(newUser);
-        if (resulet == 1) {
-            redirect = "redirect:/login";
-        } else
+        int result = dao.newUser(newUser);
+        if (result == 1) {
+            redirect = "login";
+        } else if (result == 0) {
             redirect = "redirect:/reg";
+        }else {
+            redirect = "redirect:/404";
+        }
         return redirect;
     }
 }
