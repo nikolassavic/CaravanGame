@@ -7,5 +7,6 @@
 </head>
 <body>
 <h1>GAME</h1>
+<a href="/logout"><input class="button" type="button" value="Logout"/></a>
 </body>
 </html>

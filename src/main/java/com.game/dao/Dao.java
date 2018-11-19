@@ -9,7 +9,9 @@ import java.util.List;
 public interface Dao {
     public int newUser(User newUser);
     public int loggedUser(User user);
+    public int validateUser(User user);
     public List<Object> startNewGame(User user);
-    public int saveGame(User user, Caravan caravan, Member member);
     public List<Object> startSavedGame(User user);
+    public int saveGame(User user, Caravan caravan, Member member);
+
 }

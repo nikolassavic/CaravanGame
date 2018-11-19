@@ -22,6 +22,7 @@ public class DaoImpl implements Dao {
     private static final String START_MEMBER = "INSERT INTO members(caravanId) VALUES(?)";
     private static final String GET_CARAVAN = "SELECT * FROM caravans WHERE userId=?";
     private static final String GET_MEMBER = "SELECT * FROM members WHERE caravanId=?";
+    private static final String VALIDATE_USER = "UPDATE users set isValid = 1 WHERE users.id = ?";
 
     @Override
     public int newUser(User newUser) {
@@ -77,6 +78,29 @@ public class DaoImpl implements Dao {
                 result = 0;
             }
 
+        } catch (SQLException e) {
+            result = -1;
+            //e.printStackTrace();
+        } finally {
+            ConnectionManager.closeStatement(callableStatement);
+            ConnectionManager.closeConnection(connection);
+        }
+        return result;
+    }
+
+    @Override
+    public int validateUser(User user) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        int result;
+
+        try {
+            connection = ConnectionManager.getConnection();
+            callableStatement = connection.prepareCall(VALIDATE_USER);
+            callableStatement.setInt(1,user.getId());
+            callableStatement.execute();
+            ConnectionManager.commit(connection);
+            result = 1;
         } catch (SQLException e) {
             result = -1;
             e.printStackTrace();
