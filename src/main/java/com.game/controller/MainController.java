@@ -7,10 +7,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.IOException;
 
 @Controller()
 public class MainController {
-    String[] isValidMsg = {"Error", "Validated mail", "Not Validated"};
+
     @Autowired
     private Dao dao;
 
@@ -20,25 +24,27 @@ public class MainController {
     }
 
     @GetMapping(value = "/login")
-    public String loginPagee(@ModelAttribute("user") User user) {
+    public String loginPage(@ModelAttribute("user") User user) {
         return "login";
     }
 
     @PostMapping(value = "/login")
-    public String logged(User user) {
+    public String logged(User user, HttpServletRequest request, HttpServletResponse response) {
         String redirect;
         user.setPassword(DigestUtils.sha256Hex(user.getPassword()));
         user.setId(-1);
         int result = dao.loggedUser(user);
-        System.out.println(isValidMsg[result]);
         if (result == 0) {
             redirect = "redirect:/login";
         } else if (result == 1) {
-            redirect = "game";
+            HttpSession httpSession = request.getSession();
+            httpSession.setAttribute("thisUser", user);
+            System.out.println("SESSION ID FROM HTTPSESION >>> "+httpSession.getId());
+            redirect = "redirect:/game";
         } else if (result == 2) {
-            redirect = "game";
+            redirect = "redirect:/validate";
         } else {
-            redirect = "404";
+            redirect = "redirect:/404";
         }
         return redirect;
     }
@@ -48,15 +54,42 @@ public class MainController {
         return "registration";
     }
 
-    @PostMapping(value = "/regregistration")
+    @PostMapping(value = "/registration")
     String registation(User newUser) {
         String redirect;
         newUser.setPassword(DigestUtils.sha256Hex(newUser.getPassword()));
-        int resulet = dao.newUser(newUser);
-        if (resulet == 1) {
-            redirect = "redirect:/login";
-        } else
+        int result = dao.newUser(newUser);
+        if (result == 1) {
+            redirect = "login";
+        } else if (result == 0) {
             redirect = "redirect:/reg";
+        }else {
+            redirect = "redirect:/404";
+        }
         return redirect;
+    }
+
+    @GetMapping("/validate")
+    public String validate(){
+        return "validate";
+    }
+    @PostMapping("/validated")
+    public String validated( HttpServletRequest request, HttpSession session){
+        String redirect;
+        if (request.getParameter("label") == request.getParameter("user-input")){
+            User user = (User) session.getAttribute("thisUser");
+            dao.validateUser(user);
+            redirect = "redirect:/game";
+        }
+        else {
+            redirect = "redirect:/validate";
+        }
+        return redirect;
+    }
+
+    @GetMapping(value = "/logout")
+    public void logout(HttpServletRequest request, HttpServletResponse response) throws IOException {
+        request.getSession().invalidate();
+        response.sendRedirect("/login");
     }
 }

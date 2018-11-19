@@ -16,7 +16,9 @@ public class DaoImpl implements Dao {
 
     private static final String NEW_USER = "INSERT INTO users(displayName, password, email) VALUES(?,?,?)";
     private static final String GET_USER = "SELECT * FROM users WHERE email=? AND password=?";
-
+    private static final String VALIDATE_USER = "UPDATE users set isValid = 1 WHERE users.id = ?";
+    public static final String SAVE_GAME = "update caravans set toGoal=?, money=?, food=?, medicine=?, ammo=?, ox=?, canCarry=?, lastSaved=now()"; //+
+    //            "insert into members (memberFirst, memberSecond, memberThird, memberFourth, memberFifth, isAliveFirst, isAliveSecond, isAliveThird, isAliveFourth, isAliveFifth, sickLevelFirst, sickLevelSecond, sickLevelThird, sickLevelFourth, sickLevelFifth) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
     @Override
     public int newUser(User newUser) {
@@ -62,15 +64,39 @@ public class DaoImpl implements Dao {
                 user.setDisplayName(resultSet.getString("displayName"));
                 user.setValid(resultSet.getBoolean("isValid"));
             }
-            if (user.isValid()) {
-                result = 1;
-            } else if(!user.isValid()) {
-                result = 2;
-            }
-            if (user.getId() == -1){
+            if (user.getId() != -1) {
+                if (user.isValid()) {
+                    result = 1;
+                } else if (!user.isValid()) {
+                    result = 2;
+                }
+            } else {
                 result = 0;
             }
 
+        } catch (SQLException e) {
+            result = -1;
+            //e.printStackTrace();
+        } finally {
+            ConnectionManager.closeStatement(callableStatement);
+            ConnectionManager.closeConnection(connection);
+        }
+        return result;
+    }
+
+    @Override
+    public int validateUser(User user) {
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        int result;
+
+        try {
+            connection = ConnectionManager.getConnection();
+            callableStatement = connection.prepareCall(VALIDATE_USER);
+            callableStatement.setInt(1,user.getId());
+            callableStatement.execute();
+            ConnectionManager.commit(connection);
+            result = 1;
         } catch (SQLException e) {
             result = 0;
             //e.printStackTrace();
@@ -89,7 +115,42 @@ public class DaoImpl implements Dao {
 
     @Override
     public int saveGame(Caravan caravan, Member member) {
-        return 0;
+        /*zapamtiti poslednje stanje elemenata igre i upisati ih u bazu za
+         *tog usera i za taj caravan, tj. za tu sesiju*/
+        System.out.println("yuhu brate....");
+        Connection connection = null;
+        CallableStatement callableStatement = null;
+        int result;
+
+        try {
+            connection = ConnectionManager.getConnection();
+            callableStatement = connection.prepareCall(SAVE_GAME);
+//            callableStatement.setInt(1, caravan.getToGoal());
+            callableStatement.setInt(1, 500);
+//            callableStatement.setInt(2, caravan.getMoney());
+            callableStatement.setInt(2, 500);
+//            callableStatement.setInt(3, caravan.getFood());
+            callableStatement.setInt(3, 500);
+//            callableStatement.setInt(4, caravan.getMedicine());
+            callableStatement.setInt(4, 500);
+//            callableStatement.setInt(5, caravan.getAmmo());
+            callableStatement.setInt(5, 500);
+//            callableStatement.setInt(6, caravan.getOx());
+            callableStatement.setInt(6, 500);
+//            callableStatement.setInt(7, caravan.getCanCarry());
+            callableStatement.setInt(7, 500);
+//            callableStatement.setDate(8, (Date) caravan.getLastSaved());
+            callableStatement.execute();
+            ConnectionManager.commit(connection);
+            result = 1;
+        } catch (Exception e) {
+            result = 0;
+            e.printStackTrace();
+        } finally {
+            ConnectionManager.closeStatement(callableStatement);
+            ConnectionManager.closeConnection(connection);
+        }
+        return result;
     }
 
     @Override
