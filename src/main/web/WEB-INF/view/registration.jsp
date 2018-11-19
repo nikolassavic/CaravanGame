@@ -13,7 +13,7 @@
 <form:form action="/regregistration" modelAttribute="user" method="post">
     <p><span>Your nic:</span><form:input path="displayName"/></p>
     <p><span>Your email:</span><form:input path="email"/></p>
-    <p><span>Your password</span><form:input type="password" path="password"/></p>
+    <p><span>Your password</span><form:input pattern=".{3,}" path="password"/></p>
     <input type="submit" value="Register">
 </form:form>
 </body>
