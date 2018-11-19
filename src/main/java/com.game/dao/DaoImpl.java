@@ -16,13 +16,13 @@ public class DaoImpl implements Dao {
 
     private static final String NEW_USER = "INSERT INTO users(displayName, password, email) VALUES(?,?,?)";
     private static final String GET_USER = "SELECT * FROM users WHERE email=? AND password=?";
-    public static final String SAVE_CARAVAN = "UPDATE caravans SET toGoal=?, money=?, food=?, medicine=?, ammo=?, ox=?, canCarry=?, lastSaved=now() WHERE userId=?";
-    public static final String SAVE_MEMBER = "UPDATE members SET isAliveFirst=?, sickLevelFirst=?, isAliveSecond=?, sickLevelSecond=?, isAliveThird=?, sickLevelThird=?, isAliveFourth=?, sickLevelFourth=?, isAliveFifth=?, sickLevelFifth=? WHERE caravanId=?";
+    private static final String VALIDATE_USER = "UPDATE users set isValid = 1 WHERE users.id = ?";
+    private static final String SAVE_CARAVAN = "UPDATE caravans SET toGoal=?, money=?, food=?, medicine=?, ammo=?, ox=?, canCarry=?, lastSaved=now() WHERE userId=?";
+    private static final String SAVE_MEMBER = "UPDATE members SET isAliveFirst=?, sickLevelFirst=?, isAliveSecond=?, sickLevelSecond=?, isAliveThird=?, sickLevelThird=?, isAliveFourth=?, sickLevelFourth=?, isAliveFifth=?, sickLevelFifth=? WHERE caravanId=?";
     private static final String START_CARAVAN = "INSERT INTO caravans(userId) VALUES(?)";
     private static final String START_MEMBER = "INSERT INTO members(caravanId) VALUES(?)";
     private static final String GET_CARAVAN = "SELECT * FROM caravans WHERE userId=?";
     private static final String GET_MEMBER = "SELECT * FROM members WHERE caravanId=?";
-    private static final String VALIDATE_USER = "UPDATE users set isValid = 1 WHERE users.id = ?";
 
     @Override
     public int newUser(User newUser) {
@@ -74,8 +74,6 @@ public class DaoImpl implements Dao {
                 } else if (!user.isValid()) {
                     result = 2;
                 }
-            } else {
-                result = 0;
             }
 
         } catch (SQLException e) {
@@ -148,7 +146,7 @@ public class DaoImpl implements Dao {
 
             result = 1;
         } catch (SQLException e) {
-            result = 0;
+            result = -1;
             e.printStackTrace();
         } finally {
             ConnectionManager.closeStatement(callableStatement);
@@ -167,7 +165,7 @@ public class DaoImpl implements Dao {
 
         try {
             connection = ConnectionManager.getConnection();
-            //caravan:
+            //caravan
             callableStatement = connection.prepareCall(START_CARAVAN);
             callableStatement.setInt(1, user.getId());
             callableStatement.execute();
@@ -179,7 +177,7 @@ public class DaoImpl implements Dao {
             resultSet = callableStatement.getResultSet();
             setCaravan(caravan, resultSet);
 
-            //memeber:
+            //members
             callableStatement = connection.prepareCall(START_MEMBER);
             callableStatement.setInt(1, caravan.getId());
             callableStatement.execute();
@@ -214,12 +212,14 @@ public class DaoImpl implements Dao {
 
         try {
             connection = ConnectionManager.getConnection();
+            //caravan
             callableStatement = connection.prepareCall(GET_CARAVAN);
             callableStatement.setInt(1, user.getId());
             callableStatement.execute();
             resultSet = callableStatement.getResultSet();
             setCaravan(caravan, resultSet);
 
+            //members
             callableStatement = connection.prepareCall(GET_MEMBER);
             callableStatement.setInt(1, caravan.getId());
             callableStatement.execute();
@@ -239,7 +239,7 @@ public class DaoImpl implements Dao {
         return gameObjects;
     }
 
-    public static void setCaravan(Caravan caravan, ResultSet resultSet) throws SQLException {
+    private static void setCaravan(Caravan caravan, ResultSet resultSet) throws SQLException {
         while (resultSet.next()) {
             caravan.setId(resultSet.getInt("id"));
             caravan.setUserId(resultSet.getInt("userId"));
@@ -255,7 +255,7 @@ public class DaoImpl implements Dao {
         resultSet.close();
     }
 
-    public static void setMember(Member member, ResultSet resultSet) throws SQLException{
+    private static void setMember(Member member, ResultSet resultSet) throws SQLException{
         while (resultSet.next()) {
             member.setId(resultSet.getInt("id"));
             member.setCaravanId(resultSet.getInt("caravanId"));
