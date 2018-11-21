@@ -16,7 +16,7 @@ public class DaoImpl implements Dao {
 
     private static final String NEW_USER = "INSERT INTO users(displayName, password, email) VALUES(?,?,?)";
     private static final String GET_USER = "SELECT * FROM users WHERE email=? AND password=?";
-    private static final String VALIDATE_USER = "UPDATE users set isValid = 1 WHERE users.id = ?";
+    private static final String VALIDATE_USER = "UPDATE users set isValid=1 WHERE users.id=?";
     private static final String SAVE_CARAVAN = "UPDATE caravans SET toGoal=?, money=?, food=?, medicine=?, ammo=?, ox=?, canCarry=?, lastSaved=now() WHERE userId=?";
     private static final String SAVE_MEMBER = "UPDATE members SET isAliveFirst=?, sickLevelFirst=?, isAliveSecond=?, sickLevelSecond=?, isAliveThird=?, sickLevelThird=?, isAliveFourth=?, sickLevelFourth=?, isAliveFifth=?, sickLevelFifth=? WHERE caravanId=?";
     private static final String START_CARAVAN = "INSERT INTO caravans(userId) VALUES(?)";

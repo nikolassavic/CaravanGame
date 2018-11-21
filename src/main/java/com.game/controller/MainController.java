@@ -42,7 +42,7 @@ public class MainController {
         } else if (result == 1) {
             HttpSession httpSession = request.getSession();
             httpSession.setAttribute("thisUser", user);
-            System.out.println("SESSION ID FROM HTTPSESION >>> "+httpSession.getId());
+            System.out.println("SESSION ID FROM HTTPSESSION >>> "+httpSession.getId());
             redirect = "redirect:/game";
         } else if (result == 2) {
             redirect = "redirect:/validate";
@@ -76,10 +76,11 @@ public class MainController {
     public String validate(){
         return "validate";
     }
+
     @PostMapping("/validated")
     public String validated( HttpServletRequest request, HttpSession session){
         String redirect;
-        if (request.getParameter("label") == request.getParameter("user-input")){
+        if (request.getParameter("label").equals(request.getParameter("user-input"))){
             User user = (User) session.getAttribute("thisUser");
             dao.validateUser(user);
             redirect = "redirect:/game";

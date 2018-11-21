@@ -14,7 +14,7 @@
 
 <header id="header">
     <div class="container">
-        <h1>Welcom to this shiti site</h1>
+        <h1>Welcome to this shiti site</h1>
     </div>
 </header>
 
