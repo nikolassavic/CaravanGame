@@ -8,9 +8,10 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <link rel="stylesheet" href="/resources/css/login.css">
+    <link rel="stylesheet" href="${pageContext.request.contextPath}/resources/css/login.css">
     <title>Login</title>
 </head>
+<body>
 
 <header id="header">
     <div class="container">
