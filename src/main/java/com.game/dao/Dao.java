@@ -13,5 +13,5 @@ public interface Dao {
     public List<Object> startNewGame(User user);
     public List<Object> startSavedGame(User user);
     public int saveGame(User user, Caravan caravan, Member member);
-
+    public boolean check(User user);
 }

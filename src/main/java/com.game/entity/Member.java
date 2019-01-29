@@ -10,20 +10,20 @@ public class Member {
     private int id;
     private int caravanId;
     private String memberFirst;
-    private boolean isAliveFirst;
     private int sickLevelFirst;
+    private boolean isAliveFirst;
     private String memberSecond;
-    private boolean isAliveSecond;
     private int sickLevelSecond;
+    private boolean isAliveSecond;
     private String memberThird;
-    private boolean isAliveThird;
     private int sickLevelThird;
+    private boolean isAliveThird;
     private String memberFourth;
-    private boolean isAliveFourth;
     private int sickLevelFourth;
+    private boolean isAliveFourth;
     private String memberFifth;
-    private boolean isAliveFifth;
     private int sickLevelFifth;
+    private boolean isAliveFifth;
 
     public Member() {
     }

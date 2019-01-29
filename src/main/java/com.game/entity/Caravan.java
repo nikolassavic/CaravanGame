@@ -91,4 +91,20 @@ public class Caravan {
     public void setLastSaved(Timestamp lastSaved) {
         this.lastSaved = lastSaved;
     }
+
+    @Override
+    public String toString() {
+        return "Caravan{" +
+                "id=" + id +
+                ", userId=" + userId +
+                ", toGoal=" + toGoal +
+                ", money=" + money +
+                ", food=" + food +
+                ", medicine=" + medicine +
+                ", ammo=" + ammo +
+                ", ox=" + ox +
+                ", canCarry=" + canCarry +
+                ", lastSaved=" + lastSaved +
+                '}';
+    }
 }
