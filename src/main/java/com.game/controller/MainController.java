@@ -1,9 +1,6 @@
 package com.game.controller;
 
 import com.game.dao.Dao;
-import com.game.dao.DaoImpl;
-import com.game.entity.Caravan;
-import com.game.entity.Member;
 import com.game.entity.User;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +17,13 @@ public class MainController {
 
     @Autowired
     private Dao dao;
+
+    @GetMapping(value = "/game")
+    public String game(HttpServletRequest request, HttpServletResponse response){
+        String httpSessionId = request.getRequestedSessionId();
+        System.out.println("SESSION ID FROM REQUEST FOR SESSION-ID>>> "+httpSessionId);
+        return "game";
+    }
 
     @GetMapping(value = "/")
     public String index() {
@@ -62,7 +66,7 @@ public class MainController {
     }
 
     @PostMapping(value = "/registration")
-    String registation(User newUser) {
+    public String registration(User newUser) {
         String redirect;
         newUser.setPassword(DigestUtils.sha256Hex(newUser.getPassword()));
         int result = dao.newUser(newUser);
@@ -82,7 +86,7 @@ public class MainController {
     }
 
     @PostMapping("/validated")
-    public String validated( HttpServletRequest request, HttpSession session){
+    public String validated(HttpServletRequest request, HttpSession session){
         String redirect;
         int label = Integer.parseInt(request.getParameter("label"));
         int input = Integer.parseInt(request.getParameter("input"));

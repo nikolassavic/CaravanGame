@@ -24,7 +24,6 @@ public class DaoImpl implements Dao {
     private static final String START_MEMBER = "INSERT INTO members(caravanId) VALUES(?)";
     private static final String GET_CARAVAN = "SELECT * FROM caravans WHERE userId=?";
     private static final String GET_MEMBER = "SELECT * FROM members WHERE caravanId=?";
-    private static final String CHECK_IS_THERE_USER = "SELECT id FROM caravans WHERE userId=?";
     private static final String FIND_CARAVANID = "SELECT id from caravans where userId=?";
     private static final String FIND_MEMBERID = "select id from members where caravanId=?";
     private static final String DELETE_CARAVANROW = "delete from caravans where id=?";
@@ -84,7 +83,6 @@ public class DaoImpl implements Dao {
 
         } catch (SQLException e) {
             result = -1;
-            //e.printStackTrace();
         } finally {
             ConnectionManager.closeStatement(callableStatement);
             ConnectionManager.closeConnection(connection);
@@ -322,30 +320,5 @@ public class DaoImpl implements Dao {
             member.setSickLevelFifth(resultSet.getInt("sickLevelFifth"));
         }
         resultSet.close();
-    }
-
-    @Override
-    public boolean check(User user) {
-        Caravan caravan = new Caravan();
-        Connection connection = null;
-        CallableStatement callableStatement = null;
-        ResultSet resultSet;
-        try {
-            connection = ConnectionManager.getConnection();
-            callableStatement = connection.prepareCall(CHECK_IS_THERE_USER);
-            callableStatement.setInt(1, user.getId());
-            callableStatement.execute();
-            ConnectionManager.commit(connection);
-            resultSet = callableStatement.getResultSet();
-
-            if (resultSet != null){
-                return true;
-            } else {
-                return false;
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
     }
 }
